@@ -1,0 +1,13 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-inter: var(--font-inter);
+}
+
+* {
+  @apply transition-colors! duration-300!;
+}
+
+body {
+  @apply bg-zinc-950 font-inter;
+}
