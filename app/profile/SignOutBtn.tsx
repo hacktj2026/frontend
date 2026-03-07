@@ -9,7 +9,7 @@ function SignOutBtn() {
     window.location.reload();
   }
 
-  return <Btn text="Sign out" onclick={handleSignOut} />;
+  return <Btn text="Sign out" onclick={handleSignOut} primary />;
 }
 
 export default SignOutBtn;

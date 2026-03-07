@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import Hero from "@/components/layout/Hero";
 import Form from "./Form";
 
 export const metadata: Metadata = {
@@ -16,7 +17,8 @@ async function Page() {
   if (session) redirect("/profile");
 
   return (
-    <div>
+    <div className="flex flex-col items-center w-full max-w-400 m-auto mb-10">
+      <Hero title="Sign in to Language App" />
       <Form />
     </div>
   );

@@ -23,7 +23,9 @@ function NavUser({ user }: { user: User }) {
           className="rounded-full border-2 border-zinc-800"
         />
       )}
-      {user.name}
+      <span className="hidden sm:block">
+        {user.name.slice(0, 20) + (user.name.length > 20 ? "..." : "")}
+      </span>
     </Link>
   );
 }
