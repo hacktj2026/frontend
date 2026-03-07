@@ -1,11 +1,18 @@
 import { FaGlobe } from "react-icons/fa";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
+import Btn from "../ui/Btn";
+import NavUser from "./NavUser";
 import Link from "next/link";
-import SignInBtn from "./SignInBtn";
 
 const navLinkStyles =
   "rounded-lg hover:bg-zinc-900 text-zinc-300 py-2 px-4 font-bold";
 
-function Nav() {
+async function Nav() {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
   return (
     <div className="flex relative justify-center border-b-2 border-zinc-800 py-2.5 items-center">
       <Link
@@ -27,7 +34,11 @@ function Nav() {
         </Link>
       </div>
       <div className="flex items-center gap-x-5 absolute right-50">
-        <SignInBtn />
+        {session ? (
+          <NavUser user={session.user} />
+        ) : (
+          <Btn text="Sign in" link="/signin" primary />
+        )}
       </div>
     </div>
   );
