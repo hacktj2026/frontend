@@ -61,7 +61,6 @@ function Quiz() {
     );
     const data: QuizType = await res.json();
     setQuiz(data);
-    console.log(data);
   }
 
   async function handleSubmit(e: React.SubmitEvent) {

@@ -66,7 +66,6 @@ function Quiz() {
     const data: QuizType = await res.json();
     setQuiz(data);
     setLoading(false);
-    console.log(data);
   }
 
   useEffect(() => {
