@@ -18,7 +18,7 @@ const sectionHeadingStyles =
   "text-white text-2xl font-bold flex items-center gap-x-5 text-center";
 
 export const metadata: Metadata = {
-  title: "My Profile | Language App",
+  title: "My Profile | LinguaLift",
   description: "View your profile and manage your account settings.",
 };
 

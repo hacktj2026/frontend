@@ -19,7 +19,9 @@ async function Hero({ title, description, home }: HeroProps) {
       <h1 className="bg-linear-to-br from-zinc-200 to-slate-400 bg-clip-text text-transparent text-4xl font-bold">
         {title}
       </h1>
-      {description && <p className="text-zinc-300">{description}</p>}
+      {description && (
+        <p className="text-zinc-300 w-[95%] md:w-[75%]">{description}</p>
+      )}
       {home && (
         <div className="flex gap-x-5">
           <AnimateBtn>

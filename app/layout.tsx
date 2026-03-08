@@ -10,7 +10,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Home | Language App",
+  title: "Home | LinguaLift",
   description:
     "This app improves the invisible infrastructure of language learning by providing a simple interface to create and share Spanish flashcards and quizzes.",
 };

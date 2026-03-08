@@ -1,5 +1,12 @@
+import type { Metadata } from "next";
 import Hero from "@/components/layout/Hero";
 import Quiz from "./Quiz";
+
+export const metadata: Metadata = {
+  title: "Free Response Quiz | LinguaLift",
+  description:
+    "Interactive quiz with dynamically generated free response questions!",
+};
 
 function Page() {
   return (

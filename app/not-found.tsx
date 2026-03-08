@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Page Not Found | Language App",
+  title: "Page Not Found | LinguaLift",
   description: "This page doesn't exist...",
 };
 

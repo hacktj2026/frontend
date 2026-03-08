@@ -3,7 +3,7 @@ import Hero from "@/components/layout/Hero";
 import QuizCard from "@/components/ui/QuizCard";
 
 export const metadata: Metadata = {
-  title: "Flashcards | Language App",
+  title: "Flashcards | LinguaLift",
   description: "Create your own custom interactive flashcards!",
 };
 

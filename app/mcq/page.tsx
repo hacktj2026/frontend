@@ -1,5 +1,12 @@
+import type { Metadata } from "next";
 import Hero from "@/components/layout/Hero";
 import Quiz from "./Quiz";
+
+export const metadata: Metadata = {
+  title: "Multiple Choice Quiz | LinguaLift",
+  description:
+    "Interactive quiz with dynamically generated 4-option multiple choice questions!",
+};
 
 function Page() {
   return (

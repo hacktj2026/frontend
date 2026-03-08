@@ -1,9 +1,16 @@
+import type { Metadata } from "next";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { createFlashcards } from "./actions";
 import Hero from "@/components/layout/Hero";
 import Flashcards from "./Flashcards";
+
+export const metadata: Metadata = {
+  title: "Make Flashcards | LinguaLift",
+  description:
+    "Create your own custom flashcards with words and their definitions to improve your vocabulary and skills!",
+};
 
 async function Page() {
   const session = await auth.api.getSession({

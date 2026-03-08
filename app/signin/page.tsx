@@ -6,7 +6,7 @@ import Hero from "@/components/layout/Hero";
 import Form from "./Form";
 
 export const metadata: Metadata = {
-  title: "Sign In | Language App",
+  title: "Sign In | LinguaLift",
   description: "Sign in to your account to access your flashcards and quizzes.",
 };
 
@@ -18,7 +18,7 @@ async function Page() {
 
   return (
     <div className="flex flex-col items-center w-full max-w-400 m-auto mb-10">
-      <Hero title="Sign in to Language App" />
+      <Hero title="Sign in to LinguaLift" />
       <Form />
     </div>
   );

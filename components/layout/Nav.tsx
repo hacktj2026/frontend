@@ -1,9 +1,9 @@
-import { FaGlobe } from "react-icons/fa";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import Btn from "../ui/Btn";
 import NavUser from "./NavUser";
 import AnimateBtn from "./AnimateBtn";
+import Image from "next/image";
 import Link from "next/link";
 
 const navLinkStyles =
@@ -21,8 +21,8 @@ async function Nav() {
           href="/"
           className="flex items-center gap-x-3 absolute left-3 sm:left-10 md:left-25 lg:left-50 text-white text-lg font-bold"
         >
-          <FaGlobe size={30} />
-          <span className="hidden md:block">Language App</span>
+          <Image src="/favicon.png" alt="Logo" width={40} height={40} />
+          <span className="hidden md:block">LinguaLift</span>
         </Link>
         <div className="flex gap-x-3">
           <Link href="/quizzes" className={navLinkStyles}>
