@@ -12,13 +12,11 @@ export async function updateName(email: string, name: string) {
     });
     if (session?.user.email !== email) throw new Error("Email doesn't match");
     await dbConnect();
-    console.log(email, name);
-    const updatedUser = await User.findOneAndUpdate(
+    await User.findOneAndUpdate(
       { email: email },
       { name: name },
       { returnDocument: "after" },
     );
-    console.log(updatedUser);
   } catch (err) {
     console.error("Error: " + err);
   }

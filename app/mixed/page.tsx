@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Hero from "@/components/layout/Hero";
+import Quiz from "./Quiz";
 
 export const metadata: Metadata = {
   title: "Mixed Quiz | LinguaLift",
@@ -14,6 +15,7 @@ function Page() {
         title="Mixed Quiz"
         description="Strengthen your Spanish skills more with this quiz mixed with both multiple choice and free response questions!"
       />
+      <Quiz />
     </div>
   );
 }

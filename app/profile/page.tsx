@@ -51,7 +51,9 @@ async function Page() {
           )}
           <div className="flex flex-col gap-y-2 text-zinc-300 items-start justify-center">
             <EditName updateName={updateName} />
-            <div className="mb-3 text-white text-lg font-bold">Level: 0</div>
+            <div className="mb-3 text-white text-lg font-bold">
+              Skill level: {existingUser?.skillLevel || 50}
+            </div>
             <p className="">
               Email:{" "}
               <a

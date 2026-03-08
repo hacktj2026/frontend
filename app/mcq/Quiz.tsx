@@ -11,26 +11,40 @@ function Quiz() {
   const [index, setIndex] = useState<number>(0);
   const [quiz, setQuiz] = useState<QuizType | null>(null);
 
-  function handleChoose(index: number) {
+  async function handleChoose(index: number) {
     if (!answered) {
-      console.log("Chose: " + index);
       setSelected(index);
-      //fetch backend api here and stuff
       setAnswered(true);
-      setCorrect(quiz!.choices[index] === quiz!.correctAnswer);
+      const correct = quiz!.choices[index] === quiz!.correctAnswer;
+      setCorrect(correct);
+      await fetch(
+        process.env.NEXT_PUBLIC_API_URL +
+          "/api/check-answer?username=test&correct=" +
+          correct +
+          "&level=" +
+          quiz?.level,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "ngrok-skip-browser-warning": "69420",
+          },
+        },
+      );
     }
   }
 
   function handleNextQuestion() {
-    console.log("Next question");
-    setIndex((prev) => prev + 1);
-    //fetch backend api here and stuff
+    fetchQuiz();
     setAnswered(false);
+    setTimeout(() => {
+      setIndex((prev) => prev + 1);
+    }, 400);
   }
 
   async function fetchQuiz() {
     const res = await fetch(
-      process.env.NEXT_PUBLIC_API_URL + "/api/problem?level=1&username=test",
+      process.env.NEXT_PUBLIC_API_URL + "/api/mcq/problem?username=test",
       {
         method: "GET",
         headers: {
@@ -44,6 +58,10 @@ function Quiz() {
   }
 
   useEffect(() => {
+    fetchQuiz();
+  }, []);
+
+  useEffect(() => {
     const keyListener = (e: KeyboardEvent) => {
       if (Number(e.key) >= 1 && Number(e.key) <= 4) {
         handleChoose(Number(e.key) - 1);
@@ -54,10 +72,6 @@ function Quiz() {
       document.removeEventListener("keydown", keyListener);
     };
   });
-
-  useEffect(() => {
-    fetchQuiz();
-  }, [index]);
 
   return (
     <div className="flex flex-col items-center w-[90%] sm:w-[80%] md:w-[50%] max-w-400 m-auto gap-y-10 pb-10">
