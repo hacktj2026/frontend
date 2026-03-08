@@ -5,16 +5,17 @@ type InputProps = {
   value: string;
   setValue: (value: string) => void;
   password?: boolean;
+  full?: boolean;
 };
 
-function Input({ placeholder, value, setValue, password }: InputProps) {
+function Input({ placeholder, value, setValue, password, full }: InputProps) {
   return (
     <input
       type={password ? "password" : "text"}
       placeholder={placeholder}
       value={value}
       onChange={(e) => setValue(e.target.value)}
-      className="rounded-lg border-zinc-800 border-2 px-4 py-2 text-zinc-300 outline-none"
+      className={`rounded-lg border-zinc-800 border-2 px-4 py-2 outline-none ${full ? "w-full text-white text-lg" : "text-zinc-300"}`}
     />
   );
 }
