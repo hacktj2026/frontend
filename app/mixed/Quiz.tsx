@@ -2,6 +2,7 @@
 
 import type { QuizType } from "@/types/Quiz";
 import { useState, useEffect } from "react";
+import { authClient } from "@/lib/auth-client";
 import Btn from "@/components/ui/Btn";
 import Input from "@/components/ui/Input";
 
@@ -12,6 +13,7 @@ function Quiz() {
   const [index, setIndex] = useState<number>(0);
   const [response, setResponse] = useState<string>("");
   const [quiz, setQuiz] = useState<QuizType | null>(null);
+  const { data: session } = authClient.useSession();
 
   async function handleChoose(index: number) {
     if (!answered) {
@@ -21,7 +23,7 @@ function Quiz() {
       setCorrect(correct);
       await fetch(
         process.env.NEXT_PUBLIC_API_URL +
-          "/api/check-answer?username=test&correct=" +
+          `/api/check-answer?username=${session?.user.email}&correct=` +
           correct +
           "&level=" +
           quiz?.level,
@@ -47,7 +49,8 @@ function Quiz() {
 
   async function fetchQuiz() {
     const res = await fetch(
-      process.env.NEXT_PUBLIC_API_URL + "/api/problem?username=test",
+      process.env.NEXT_PUBLIC_API_URL +
+        `/api/problem?username=${session?.user.email}`,
       {
         method: "GET",
         headers: {
@@ -75,7 +78,7 @@ function Quiz() {
       setCorrect(wasCorrect);
       await fetch(
         process.env.NEXT_PUBLIC_API_URL +
-          "/api/check-answer?username=test&correct=" +
+          `/api/check-answer?username=${session?.user.email}&correct=` +
           wasCorrect +
           "&level=" +
           quiz?.level,
@@ -179,7 +182,7 @@ function Quiz() {
           </form>
         )}
       </div>
-      {answered && quiz?.choices.length > 0 && (
+      {answered && quiz && quiz.choices.length > 0 && (
         <Btn text="Next question" onclick={handleNextQuestion} primary />
       )}
     </div>

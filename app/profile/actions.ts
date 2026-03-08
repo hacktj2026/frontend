@@ -21,3 +21,15 @@ export async function updateName(email: string, name: string) {
     console.error("Error: " + err);
   }
 }
+
+export async function handleDelete() {
+  try {
+    const session = await auth.api.getSession({
+      headers: await headers(),
+    });
+    await dbConnect();
+    await User.findOneAndDelete({ email: session?.user.email });
+  } catch (err) {
+    console.error("Error: " + err);
+  }
+}

@@ -6,11 +6,13 @@ import { FaUserCircle } from "react-icons/fa";
 import { updateName } from "./actions";
 import { dbConnect } from "@/lib/db";
 import { User } from "@/models/User";
+import { handleDelete } from "./actions";
 import SignOutBtn from "./SignOutBtn";
 import EditName from "./EditName";
 import FlashcardCard from "./FlashcardCard";
 import Hero from "@/components/layout/Hero";
 import Image from "next/image";
+import DeleteBtn from "./DeleteBtn";
 
 const sectionStyles =
   "flex flex-col items-center border-2 border-zinc-800 rounded-lg p-10 gap-10 max-w-300 w-[90%] md:w-[70%]";
@@ -52,7 +54,7 @@ async function Page() {
           <div className="flex flex-col gap-y-2 text-zinc-300 items-start justify-center">
             <EditName updateName={updateName} />
             <div className="mb-3 text-white text-lg font-bold">
-              Skill level: {existingUser?.skillLevel || 50}
+              Skill level: {existingUser?.skill || 0}
             </div>
             <p className="">
               Email:{" "}
@@ -66,7 +68,10 @@ async function Page() {
             <p className="mb-3">
               Joined {session.user.createdAt.toLocaleDateString()}
             </p>
-            <SignOutBtn />
+            <div className="flex gap-x-5">
+              <SignOutBtn />
+              <DeleteBtn handleDelete={handleDelete} />
+            </div>
           </div>
         </div>
         <div className={sectionStyles}>

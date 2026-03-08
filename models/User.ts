@@ -6,7 +6,7 @@ const UserSchema = new Schema(
     email: { type: String, required: true },
     image: { type: String, required: true },
     flashcards: { type: [String], default: [] },
-    skill: { type: Number, default: 50 },
+    skill: { type: Number, default: 0 },
     emailVerified: { type: Boolean },
   },
   { collection: "user", timestamps: true },

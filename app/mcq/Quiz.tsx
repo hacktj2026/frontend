@@ -2,6 +2,7 @@
 
 import type { QuizType } from "@/types/Quiz";
 import { useState, useEffect } from "react";
+import { authClient } from "@/lib/auth-client";
 import Btn from "@/components/ui/Btn";
 
 function Quiz() {
@@ -10,6 +11,7 @@ function Quiz() {
   const [selected, setSelected] = useState<number | null>(null);
   const [index, setIndex] = useState<number>(0);
   const [quiz, setQuiz] = useState<QuizType | null>(null);
+  const { data: session } = authClient.useSession();
 
   async function handleChoose(index: number) {
     if (!answered) {
@@ -19,7 +21,7 @@ function Quiz() {
       setCorrect(correct);
       await fetch(
         process.env.NEXT_PUBLIC_API_URL +
-          "/api/check-answer?username=test&correct=" +
+          `/api/check-answer?username=${session?.user.email}&correct=` +
           correct +
           "&level=" +
           quiz?.level,
@@ -44,7 +46,8 @@ function Quiz() {
 
   async function fetchQuiz() {
     const res = await fetch(
-      process.env.NEXT_PUBLIC_API_URL + "/api/mcq/problem?username=test",
+      process.env.NEXT_PUBLIC_API_URL +
+        `/api/mcq/problem?username=${session?.user.email}`,
       {
         method: "GET",
         headers: {
