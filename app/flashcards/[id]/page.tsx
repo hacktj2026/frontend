@@ -19,7 +19,7 @@ async function Page({ params }: { params: { id: string } }) {
   return (
     <div className="flex flex-col items-center w-full max-w-400 m-auto pb-10">
       <Hero title={flashcards.title} description={flashcards.description} />
-      <Flashcards flashcards={flashcards.flashcards} />
+      <Flashcards flashcards={flashcards.flashcards} email={flashcards.email} />
     </div>
   );
 }

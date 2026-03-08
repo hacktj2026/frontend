@@ -4,8 +4,11 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { FaUserCircle } from "react-icons/fa";
 import { updateName } from "./actions";
+import { dbConnect } from "@/lib/db";
+import { User } from "@/models/User";
 import SignOutBtn from "./SignOutBtn";
 import EditName from "./EditName";
+import FlashcardCard from "./FlashcardCard";
 import Hero from "@/components/layout/Hero";
 import Image from "next/image";
 
@@ -24,6 +27,8 @@ async function Page() {
     headers: await headers(),
   });
   if (!session) redirect("/signin");
+  await dbConnect();
+  const existingUser = await User.findOne({ email: session.user.email });
 
   return (
     <div className="flex flex-col items-center w-full max-w-400 m-auto pb-10">
@@ -63,12 +68,14 @@ async function Page() {
           </div>
         </div>
         <div className={sectionStyles}>
-          <h2 className={sectionHeadingStyles}>My Quizzes</h2>
-          <p className="text-zinc-300">Quizzes coming soon</p>
-        </div>
-        <div className={sectionStyles}>
           <h2 className={sectionHeadingStyles}>My Flashcards</h2>
-          <p className="text-zinc-300">Flashcards coming soon</p>
+          <div className="flex gap-5 text-zinc-300">
+            {existingUser.flashcards.length > 0
+              ? existingUser.flashcards.map((flashcard: string, i: number) => {
+                  return <FlashcardCard key={i} id={flashcard} />;
+                })
+              : "You haven't created any flashcards!"}
+          </div>
         </div>
       </div>
     </div>
