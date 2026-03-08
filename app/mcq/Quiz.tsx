@@ -1,19 +1,15 @@
 "use client";
 
+import type { QuizType } from "@/types/Quiz";
 import { useState, useEffect } from "react";
 import Btn from "@/components/ui/Btn";
-
-const options = [
-  { text: "option 1" },
-  { text: "option 2", correct: true },
-  { text: "option 3" },
-  { text: "option 4" },
-];
 
 function Quiz() {
   const [answered, setAnswered] = useState<boolean>(false);
   const [correct, setCorrect] = useState<boolean>(false);
   const [selected, setSelected] = useState<number | null>(null);
+  const [index, setIndex] = useState<number>(0);
+  const [quiz, setQuiz] = useState<QuizType | null>(null);
 
   function handleChoose(index: number) {
     if (!answered) {
@@ -21,14 +17,30 @@ function Quiz() {
       setSelected(index);
       //fetch backend api here and stuff
       setAnswered(true);
-      setCorrect(options[index].correct || false);
+      setCorrect(quiz!.choices[index] === quiz!.correctAnswer);
     }
   }
 
   function handleNextQuestion() {
     console.log("Next question");
+    setIndex((prev) => prev + 1);
     //fetch backend api here and stuff
     setAnswered(false);
+  }
+
+  async function fetchQuiz() {
+    const res = await fetch(
+      process.env.NEXT_PUBLIC_API_URL + "/api/problem?level=1&username=test",
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "ngrok-skip-browser-warning": "69420",
+        },
+      },
+    );
+    const data: QuizType = await res.json();
+    setQuiz(data);
   }
 
   useEffect(() => {
@@ -43,22 +55,27 @@ function Quiz() {
     };
   });
 
+  useEffect(() => {
+    fetchQuiz();
+  }, [index]);
+
   return (
     <div className="flex flex-col items-center w-[90%] sm:w-[80%] md:w-[50%] max-w-400 m-auto gap-y-10 pb-10">
       <div className="flex flex-col gap-y-10 w-full">
         <div className="flex flex-col gap-y-3">
-          <h2 className="font-bold text-white text-lg">Question 1 </h2>
+          <h2 className="font-bold text-white text-lg">
+            Question #{index + 1}
+          </h2>
           <h2 className="text-white text-lg">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab, eveniet
-            quasi? Laboriosam corporis quod quidem?
+            {quiz ? quiz.question : "Loading question..."}
           </h2>
         </div>
         <div className="flex flex-wrap justify-center gap-3">
-          {options.map((option, index) => {
+          {quiz?.choices.map((option, index) => {
             return (
               <div
                 key={index}
-                className={`${options[index].correct && answered && "bg-green-900"} ${
+                className={`${option === quiz.correctAnswer && answered && "bg-green-900"} ${
                   selected === index && answered && !correct
                     ? " bg-red-900"
                     : ""
@@ -70,7 +87,7 @@ function Quiz() {
                     {index + 1}
                   </div>
                 )}
-                {option.text}
+                {option}
               </div>
             );
           })}

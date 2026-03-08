@@ -1,13 +1,22 @@
 "use client";
 
-import { useState } from "react";
+import type { FlashcardsType } from "@/types/Flashcards";
+import { useState, useEffect } from "react";
 import { FaTrash } from "react-icons/fa";
-import {motion} from "framer-motion"
+import { motion } from "framer-motion";
+import { authClient } from "@/lib/auth-client";
+import { redirect } from "next/navigation";
 import Input from "@/components/ui/Input";
 import Btn from "@/components/ui/Btn";
 
-function Flashcards() {
-  const [flashcards, setFlashcards] = useState({
+function Flashcards({
+  createFlashcards,
+}: {
+  createFlashcards: (flashcards: FlashcardsType) => Promise<void>;
+}) {
+  const { data: session } = authClient.useSession();
+  const [flashcards, setFlashcards] = useState<FlashcardsType>({
+    id: crypto.randomUUID(),
     title: "",
     description: "",
     flashcards: [
@@ -16,14 +25,25 @@ function Flashcards() {
         definition: "",
       },
     ],
+    email: session?.user.email || "",
   });
 
-  function handleDelete(index:number) {
-    setFlashcards({...flashcards,flashcards:flashcards.flashcards.filter((flashcard,i)=>index!==i)})
+  useEffect(() => {
+    setFlashcards((prev) => {
+      return { ...prev, email: session?.user.email || "" };
+    });
+  }, [session]);
+
+  function handleDelete(index: number) {
+    setFlashcards({
+      ...flashcards,
+      flashcards: flashcards.flashcards.filter((flashcard, i) => index !== i),
+    });
   }
 
-  function handleSubmit() {
-    console.log(flashcards);
+  async function handleSubmit() {
+    await createFlashcards(flashcards);
+    redirect("/flashcards/" + flashcards.id);
   }
 
   return (
@@ -44,8 +64,13 @@ function Flashcards() {
       </div>
       <div className="w-full flex flex-col gap-y-3">
         {flashcards.flashcards.map((flashcard, index) => (
-          <div key={index} className="flex flex-col gap-y-3 rounded-lg border-zinc-800 border-2 p-5 relative">
-            <h2 className="text-white text-lg font-bold mb-2">Flashcard #{index+1}</h2>
+          <div
+            key={index}
+            className="flex flex-col gap-y-3 rounded-lg border-zinc-800 border-2 p-5 relative"
+          >
+            <h2 className="text-white text-lg font-bold mb-2">
+              Flashcard #{index + 1}
+            </h2>
             <Input
               placeholder="Enter word here"
               value={flashcard.word}
@@ -73,30 +98,33 @@ function Flashcards() {
                 });
               }}
             />
-            {flashcards.flashcards.length>1 && 
-            <motion.div whileHover={{y:-1,scale:1.2}} className="text-red-600 absolute top-5 right-5 cursor-pointer" onClick={()=>handleDelete(index)} >
-            <FaTrash size={20} title="Delete flashcard" /></motion.div>}
+            {flashcards.flashcards.length > 1 && (
+              <motion.div
+                whileHover={{ y: -1, scale: 1.2 }}
+                className="text-red-600 absolute top-5 right-5 cursor-pointer"
+                onClick={() => handleDelete(index)}
+              >
+                <FaTrash size={20} title="Delete flashcard" />
+              </motion.div>
+            )}
           </div>
         ))}
       </div>
       <div className="flex gap-x-5">
-      <Btn
-        text="Add flashcard"
-        onclick={() =>
-          setFlashcards({
-            ...flashcards,
-            flashcards: [
-              ...flashcards.flashcards,
-              { word: "", definition: "" },
-            ],
-          })
-        }
-      />
-      <Btn
-        text="Submit set"
-        onclick={handleSubmit}
-        primary
-      /></div>
+        <Btn
+          text="Add flashcard"
+          onclick={() =>
+            setFlashcards({
+              ...flashcards,
+              flashcards: [
+                ...flashcards.flashcards,
+                { word: "", definition: "" },
+              ],
+            })
+          }
+        />
+        <Btn text="Submit set" onclick={handleSubmit} primary />
+      </div>
     </div>
   );
 }
